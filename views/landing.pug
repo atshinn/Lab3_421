@@ -1,0 +1,42 @@
+mixin create_book_row(book)
+	tr
+		td= book.name
+		td= book.price
+		
+
+mixin create_book_table(books)
+	br
+	table(cellpadding="10")
+		tbody
+			tr 
+				th Name
+				th Price
+				th More Info
+			each book in books
+				+create_book_row(book)
+
+
+
+doctype html
+html
+	head
+		
+	body
+		h2 All the books in the bookstore!
+
+		br
+		table(cellpadding="10")
+			tbody
+				tr
+					th Name
+					th Price
+					th More Info
+				each book in books
+					tr
+						td= book.name
+						td= book.price
+						td.
+							#[a(href=book.url) More Info]
+		p.
+			I want to
+			#[a(href="http://localhost:8000/login") make a purchase!]
