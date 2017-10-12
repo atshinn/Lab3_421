@@ -2,8 +2,28 @@ var bookList = '{"books":[{"id":"book1","name":"Book Title","price":"9.99","url
 
 var books = JSON.parse(bookList);
 
+
+function Purchase(name,book,quantity){
+    var index = 0;
+    while(index < books.books.length && books.books[index].name != name){
+        index++;
+    }
+    if(index >= books.books.length){
+        this.book == books.books[index];
+        this.name = name;
+        this.thankyou = "Thank you " + this.name;
+        this.unitCost = "2.09";
+        this.quantity = quantity;
+        this.totalCost = (parseFloat(this.unitCost) * parseInt(this.quantity,10)).toFixed(2);
+        this.costStr = "The total cost is $" + this.totalCost.toString();
+        this.defined = true;
+    }
+    else{
+        this.defined = false;
+    }
+    
+}
 console.log(books.toString());
-//console.log(books.books.toString());
 var express = require('express');
 var app = express();
 var bodParser = require('body-parser');
@@ -80,9 +100,6 @@ app.listen(8000, 'localhost');
 
 app.get("/landing", function (req, res) {
     res.render("landing", books);
-    //res.send(landingHtml);
-    //landingHtml;
-    //console.log(books.books);
 });
 
 app.get("/login", function (req, res) {
@@ -120,5 +137,12 @@ app.post("/login", function (req, res) {
         var responseHtml = loginHtml;
     }
     sendHtmlRes(res, responseHtml);
+});
+
+app.post("/purchase", function(req,res) {
+    var purchase = new Purchase(req.body.Name,req.body.bookselection,req.body.Quantity);
+    if(purchase.defined)
+        res.render("purchase",purchase);
+    console.log("render finished");
 });
 
