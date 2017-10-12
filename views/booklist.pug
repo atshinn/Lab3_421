@@ -1,0 +1,26 @@
+html
+    head
+        title Booklist
+
+    body
+        br 
+        p Please provide the following information:
+        form(action="/purchase" method = "post")
+            table(border = "0")
+                tbody
+                    tr
+                        td Name:
+                    tr
+                        td Quantity
+                        td 
+                            input(name="Quantity" size = "4" maxlength="12" type="text")
+                    tr
+                        td Books
+                        td
+                            select(size=books.length name="Books" multiple="multiple")
+                                each book in books
+                                    option(value=book.name.replace("\\s+",""))= book.name
+        br
+        input(name="SUBMIT" type="submit")
+        br
+        a(href="http://localhost:8000/landing")

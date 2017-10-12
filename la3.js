@@ -79,8 +79,8 @@ function sendErrRes(res, status) {
 app.listen(8000, 'localhost');
 
 app.get("/landing", function (req, res) {
-    //res.render("landing", books);
-    res.send(landingHtml);
+    res.render("landing", books);
+    //res.send(landingHtml);
     //landingHtml;
     //console.log(books.books);
 });
@@ -99,7 +99,7 @@ app.get("/login", function (req, res) {
 });
 
 app.get("/list", function(req, res){
-    res.send(listHtml);
+    res.render("booklist",books);
 });
 
 app.post("/login", function (req, res) {
