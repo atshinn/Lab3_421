@@ -1,5 +1,7 @@
 extends template.pug
 
+block head
+	title Books
 block content
 	h2 All the books in the bookstore!
 	br
@@ -14,7 +16,5 @@ block content
 					td= book.name
 					td= book.price
 					td.
-						#[a(href=book.url) More Info]
-	p.
-		I want to
-		#[a(href="http://localhost:8000/login") make a purchase!]
+						#[a(href=book.url) Get Info]
+	p I want to <a href="/login">purchase something</a>!

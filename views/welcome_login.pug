@@ -1,0 +1,13 @@
+extends template
+
+block head
+        meta(http-equiv='content-type', content='text/html; charset=windows-1252')
+        title Bookstore: Logged in
+block content
+        h1 Bookstore: Logged in
+        br
+        br
+        | Welcome #{name}, you have successfully logged in!
+        | Click
+        a(href='http://localhost:8000/list') here
+        |  to order some books!

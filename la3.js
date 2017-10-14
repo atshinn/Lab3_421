@@ -1,35 +1,71 @@
-var bookList = '{"books":[{"id":"book1","name":"Book Title","price":"9.99","url":"http://something.org/book"},{"id":"book2","name":"Book Title 2","price":"1.99","url":"http://something.org/book2"}]}';
+var BooksJSON = (
+    '{ "books": ['
+    + '{ "id": "book1", "name": "The Image-Guided Surgical Toolkit", "price": "$0.99", "url": "http://www.igstk.org/IGSTK/help/documentation.html" }'
+    + ', { "id": "book2", "name": "Abraham Lincoln", "price": "$19.95", "url": "http://www.learnlibrary.com/abraham-lincoln/lincoln.htm" }'
+    + ', { "id": "book3", "name": "Adventures of Tom Sawyer", "price": "$10.50", "url": "http://www.pagebypagebooks.com/Mark_Twain/Tom_Sawyer/" }'
+    + ', { "id": "book4", "name": "Catcher in the Rye", "price": "$22.95", "url": "https://www.goodreads.com/book/show/5107.The_Catcher_in_the_Rye" }'
+    + ', { "id": "book5", "name": "The Legend of Sleepy Hollow", "price": "$15.99", "url": "http://www.learnlibrary.com/sleepy-hollow/sleepy-hollow.htm" }'
+    + ', { "id": "book6", "name": "Moby Dick", "price": "$24.45", "url": "https://www.amazon.com/Moby-Dick-Herman-Melville/dp/1503280780" }'
+    + ', { "id": "book7", "name": "Java Programming 101", "price": "$12.95", "url": "https://www.javaworld.com/blog/java-101/" }'
+    + ', { "id": "book8", "name": "Robinson Crusoe", "price": "$11.99", "url": "http://www.learnlibrary.com/rob-crusoe/" }'
+    + ', { "id": "book9", "name": "The Odyssey", "price": "$32.00", "url": "http://classics.mit.edu/Homer/odyssey.html" }'
+    + '] }'
+);
 
-var books = JSON.parse(bookList);
+//var bookList = '{"books":[{"id":"book1","name":"Book Title","price":"9.99","url":"http://something.org/book"},{"id":"book2","name":"Book Title 2","price":"1.99","url":"http://something.org/book2"}]}';
 
+var books = JSON.parse(BooksJSON);
+//console.log(books.books[1].name);
 
 function Purchase(name,book,quantity){
     var index = 0;
+    //console.log(book);
+    //console.log(books.books.length);
+
     while(index < books.books.length && books.books[index].name != name){
         index++;
     }
+
+
     if(index >= books.books.length){
-        this.book == books.books[index];
+        this.defined = true;
+        //this.book = books.books[index];
+        this.book = book;
         this.name = name;
         this.thankyou = "Thank you " + this.name;
-        this.unitCost = "2.09";
+
+        for (var i = 0; i < books.books.length; i++){
+            if (books.books[i].name == book){
+                this.priceNum = Number.parseFloat(books.books[i].price.match('\\$(.+)')[1]);
+                this.unitCost = this.priceNum;
+                //console.log(books.books[i].price);
+            }
+        }
+
+        //this.unitCost = "2.09";
+        //this.unitCost = books.books.;
         this.quantity = quantity;
         this.totalCost = (parseFloat(this.unitCost) * parseInt(this.quantity,10)).toFixed(2);
         this.costStr = "The total cost is $" + this.totalCost.toString();
         this.defined = true;
     }
     else{
-        this.defined = false;
+        var defined = false;
     }
-    
+
 }
-console.log(books.toString());
+
+console.log('Running...');
+//console.log(books.toString());
+
 var express = require('express');
 var app = express();
+var session = require('express-session');
 var bodParser = require('body-parser');
 
 app.use(bodParser.json()); // support json encoded bodies
 app.use(bodParser.urlencoded({extended: true})); // support encoded bodies
+app.use(session({secret: 'inittowinit'}));
 app.set('views', './views');
 app.set('view engine', 'pug');
 
@@ -54,6 +90,14 @@ var landingHtml = '<html><head><meta http-equiv="Content-Type" content="text/htm
     '<tr><td>Robinson Crusoe</td><td>$11.99</td><td><a href="http://www.learnlibrary.com/rob-crusoe/">Get Info</a></td></tr>' +
     '<tr><td>The Odyssey</td><td>$32.00</td><td><a href="http://classics.mit.edu/Homer/odyssey.html">Get Info</a></td></tr></tbody></table>' +
     'I want to <a href="http://localhost:8000/login">purchase something</a>!</body></html>';
+
+var invalidLoginHtml = '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html><head>' +
+    '<meta http-equiv="content-type" content="text/html; charset=windows-1252"><title>Bookstore: Login page</title></head>' +
+    '<body><h1>Bookstore: Login page</h1><br>    <form action="login" method="post"><table width="75%"><' +
+    'tbody><tr><td width="48%">Enter your name</td><td width="52%"><input name="usrname" type="text"></td></tr>' +
+    '<tr><td width="48%">Enter your password</td><td width="52%"><input name="pwd" type="text"></td></tr></tbody></table><p>' +
+    '<input name="Submit" value="Login" type="submit"><input name="Reset" value="Reset form" type="reset"></p>' +
+    '<p>Fields cannot be left blank</p></form></body></html>';
 
 var failedLoginHtml = '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html><head>' +
     '<meta http-equiv="content-type" content="text/html; charset=windows-1252"><title>Bookstore: Login page</title></head>' +
@@ -112,37 +156,90 @@ app.get("/login", function (req, res) {
         '<td width="52%"><input name="pwd" type="text"></td></tr></tbody></table><p> <input name="Submit" value="Login" type="submit">' +
         '<input name="Reset" value="Reset form" type="reset"></p></form></body></html>';
 
-    sendHtmlRes(res, loginHtml);
-});
-
-app.get("/list", function(req, res){
-    res.render("booklist",books);
+    //res.render('login');
+    res.render('login', {name: '', pwd: ''});
+    //sendHtmlRes(res, loginHtml);
 });
 
 app.post("/login", function (req, res) {
-    var usrName = req.body.usrname;
+    var usrName = req.body.name;
     var password = req.body.pwd;
     var submit = req.body.Submit;
     var reset = req.body.Reset;
 
     if (submit) {
+
+        console.log(usrName);
+        console.log(password);
+        if(usrName === '' || password === ''){
+            //var responseHtml = invalidLoginHtml;
+            res.render('login', {name: usrName, pwd: password});
+            return;
+        }
         if (usrName == password) {
-            var responseHtml = successfulLoginHtml;
+            //req.body.name = usrName;
+            req.session.name = usrName;
+            console.log(req.session.name);
+            res.render('welcome_login', {name: req.session.name});
+            //var responseHtml = successfulLoginHtml;
+        }
+        else if (reset) {
+            //var responseHtml = loginHtml;
+            res.render('login', {name: '', pwd: ''});
         }
         else {
             var responseHtml = failedLoginHtml;
         }
     }
-    else if (reset) {
-        var responseHtml = loginHtml;
-    }
-    sendHtmlRes(res, responseHtml);
+
+    //res.render('welcome_login', {name: req.session.name});
+    //sendHtmlRes(res, responseHtml);
+});
+
+app.get("/list", function(req, res){
+    //res.render("booklist", books);
+    res.render('list', {name: req.session.name, books: JSON.parse(BooksJSON).books});
+    //res.render("booklist", {name: nameIs, books: books});
+    //res.render('list',books);
+    //console.log(req.body.name);
+    //res.render('list', {name: req.body.name, books: books, errorMsgs: [], quantity: ''});
 });
 
 app.post("/purchase", function(req,res) {
-    var purchase = new Purchase(req.body.Name,req.body.bookselection,req.body.Quantity);
-    if(purchase.defined)
-        res.render("purchase",purchase);
+    //console.log(req.body.Quantity);
+    //console.log(req.body.bookselection);
+    //console.log(req.body.Quantity);
+    var purchase = new Purchase(req.session.name,req.body.bookselection,req.body.Quantity);
+    //var purchase = new Purchase();
+    //var priceNum = Number.parseFloat(books.price.match('\\$(.+)')[1]);
+    //book.quantity = req.body.Quantity;
+    //books.price =
+    //purchase.quantity = req.body.Quantity;
+
+    var book = Object.assign({}, books);
+
+    books.quantity = req.body.Quantity;
+
+    books.price = purchase.unitCost;
+
+    book.price = books.price;
+
+    book.unitCost = book.price;
+
+    book.totalCost = purchase.totalCost;
+
+    console.log(book.unitCost);
+
+    console.log(book.totalCost);
+
+    //books.price = books.books.price;
+    //books.unitCost = priceNum;
+    //if(purchase.defined)
+        //res.render('purchase', {name: req.session.name})
+
+    // console.log(JSON.stringify(purchase));
+    // console.log('======================');
+        res.render("purchase", purchase);
     console.log("render finished");
 });
 

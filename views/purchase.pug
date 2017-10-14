@@ -4,26 +4,30 @@ block head
     title Validate
 
 block content
-    h3= purchase.thankyou
+    h3 Thank you #{name}
+    //h3= purchase.thankyou
     p Your Order
     table(style="padding: 1in" cellpadding="2" border="2")
         tbody
             tr
                 td
                     b Book
-                td 
+                td
                     b Quantity
                 td
                     b Unit Cost
                 td
                     b Total Cost
             tr
-                td(align="left")= purchase.book.name
-                td(align="right")= purchase.quantity
-                td(align="right")= purchase.unitCost
-                td(align="right")= purchase.totalCost
-    
-    p= purchase.costStr
+                td(align="left")= book
+                td(align="right")= quantity
+                //td(align="right")= book.quantity
+                td(align="right")= unitCost
+                //td(align="right")= purchase.unitCost
+                td(align="right")= totalCost
+                //td(align="right")= purchase.totalCost
+
+    //p= purchase.costStr
     br
     p Please enter your Credit Card information
     form(method="post" action="confirm")
@@ -39,13 +43,11 @@ block content
                 tr
                     td Card Number
                     td(width="92")
-                        input(name="Cardnumber" size="16" type="text")
+                        input(name="Cardnumber" size="16" type="text" required='' title='4 groups of 4 digits, each separated by 1 space' pattern='[0-9]{4} [0-9]{4} [0-9]{4} [0-9]{4}')
                 tr
                     td Express Delivery
                     td(width="92")
                         input(name="expressdelivery" type="checkbox")
         input(name="Purchase" value="Purchase" type="submit")
         br
-        a(href="http://lead2.poly.asu.edu:8080/landing") LOGOUT
-        
-			
+        a(href='http://localhost:8000/landing') LOGOUT
