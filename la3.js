@@ -36,11 +36,14 @@ function Purchase(name,book,quantity){
 
         for (var i = 0; i < books.books.length; i++){
             if (books.books[i].name == book){
+                console.log(book);
                 this.priceNum = Number.parseFloat(books.books[i].price.match('\\$(.+)')[1]);
                 this.unitCost = this.priceNum;
+
                 //console.log(books.books[i].price);
             }
         }
+
 
         //this.unitCost = "2.09";
         //this.unitCost = books.books.;
@@ -62,7 +65,9 @@ var express = require('express');
 var app = express();
 var session = require('express-session');
 var bodParser = require('body-parser');
+var nocache = require('nocache');
 
+app.use(nocache());
 app.use(bodParser.json()); // support json encoded bodies
 app.use(bodParser.urlencoded({extended: true})); // support encoded bodies
 app.use(session({secret: 'inittowinit'}));
@@ -169,8 +174,8 @@ app.post("/login", function (req, res) {
 
     if (submit) {
 
-        console.log(usrName);
-        console.log(password);
+        //console.log(usrName);
+        //console.log(password);
         if(usrName === '' || password === ''){
             //var responseHtml = invalidLoginHtml;
             res.render('login', {name: usrName, pwd: password});
@@ -179,7 +184,11 @@ app.post("/login", function (req, res) {
         if (usrName == password) {
             //req.body.name = usrName;
             req.session.name = usrName;
-            console.log(req.session.name);
+            //console.log(req.session.name);
+
+            /////////////////////////////////
+            // Make error page pug
+            /////////////////////////////////
             res.render('welcome_login', {name: req.session.name});
             //var responseHtml = successfulLoginHtml;
         }
@@ -228,9 +237,9 @@ app.post("/purchase", function(req,res) {
 
     book.totalCost = purchase.totalCost;
 
-    console.log(book.unitCost);
+    //console.log(book.unitCost);
 
-    console.log(book.totalCost);
+    //console.log(book.totalCost);
 
     //books.price = books.books.price;
     //books.unitCost = priceNum;

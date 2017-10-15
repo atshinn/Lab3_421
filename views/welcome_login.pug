@@ -7,6 +7,9 @@ block content
         h1 Bookstore: Logged in
         br
         br
+        meta(http-equiv="cache-control", content="max-age=0")
+        meta(http-equiv="cache-control", content="no-cache")
+        meta(http-equiv="expires", content="0")
         | Welcome #{name}, you have successfully logged in!
         | Click
         a(href='http://localhost:8000/list') here

@@ -18,16 +18,19 @@ block content
                     b Unit Cost
                 td
                     b Total Cost
-            tr
-                td(align="left")= book
-                td(align="right")= quantity
-                //td(align="right")= book.quantity
-                td(align="right")= unitCost
-                //td(align="right")= purchase.unitCost
-                td(align="right")= totalCost
-                //td(align="right")= purchase.totalCost
-
+            each books in book
+                tr
+                    td(align="left")= book
+                    td(align="right")= quantity
+                    //td(align="right")= book.quantity
+                    td(align="right")= unitCost
+                    //td(align="right")= purchase.unitCost
+                    td(align="right")= totalCost
+                    //td(align="right")= purchase.totalCost
     //p= purchase.costStr
+    meta(http-equiv="cache-control", content="max-age=0")
+    meta(http-equiv="cache-control", content="no-cache")
+    meta(http-equiv="expires", content="0")
     br
     p Please enter your Credit Card information
     form(method="post" action="confirm")
