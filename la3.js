@@ -35,11 +35,15 @@ function Purchase(name,book,quantity){
         this.thankyou = "Thank you " + this.name;
 
         for (var i = 0; i < books.books.length; i++){
-            if (books.books[i].name == book){
-                console.log(book);
+            //console.log(books.books[i].name);
+            //console.log(book[i]);
+            //console.log(books.books.length);
+            if (book == books.books[i].name){
+                //console.log(book);
                 this.priceNum = Number.parseFloat(books.books[i].price.match('\\$(.+)')[1]);
+                //book[i].unitCost = this.priceNum;
+                //console.log(book[i].price);
                 this.unitCost = this.priceNum;
-
                 //console.log(books.books[i].price);
             }
         }
@@ -178,17 +182,19 @@ app.post("/login", function (req, res) {
         //console.log(password);
         if(usrName === '' || password === ''){
             //var responseHtml = invalidLoginHtml;
-            res.render('login', {name: usrName, pwd: password});
+            res.render('invalid_login', {name: '', pwd: ''});
             return;
         }
-        if (usrName == password) {
+
+        else if(usrName != password){
+            //var responseHtml = invalidLoginHtml;
+            res.render('failed_login', {name: '', pwd: ''});
+            return;
+        }
+
+        else if (usrName == password) {
             //req.body.name = usrName;
             req.session.name = usrName;
-            //console.log(req.session.name);
-
-            /////////////////////////////////
-            // Make error page pug
-            /////////////////////////////////
             res.render('welcome_login', {name: req.session.name});
             //var responseHtml = successfulLoginHtml;
         }
@@ -196,9 +202,7 @@ app.post("/login", function (req, res) {
             //var responseHtml = loginHtml;
             res.render('login', {name: '', pwd: ''});
         }
-        else {
-            var responseHtml = failedLoginHtml;
-        }
+
     }
 
     //res.render('welcome_login', {name: req.session.name});
@@ -211,13 +215,22 @@ app.get("/list", function(req, res){
     //res.render("booklist", {name: nameIs, books: books});
     //res.render('list',books);
     //console.log(req.body.name);
-    //res.render('list', {name: req.body.name, books: books, errorMsgs: [], quantity: ''});
 });
 
 app.post("/purchase", function(req,res) {
     //console.log(req.body.Quantity);
     //console.log(req.body.bookselection);
     //console.log(req.body.Quantity);
+    // var purchase;
+    //
+    // console.log(req.body.bookselection);
+    //
+    // if (req.body.bookselection.length > 1) {
+    //     for(var i=0; i < req.body.bookselection.length; i++){
+    //         purchase = new Purchase(req.session.name,req.body.bookselection[i],req.body.Quantity);
+    //     }
+    // }
+
     var purchase = new Purchase(req.session.name,req.body.bookselection,req.body.Quantity);
     //var purchase = new Purchase();
     //var priceNum = Number.parseFloat(books.price.match('\\$(.+)')[1]);
@@ -227,15 +240,15 @@ app.post("/purchase", function(req,res) {
 
     var book = Object.assign({}, books);
 
-    books.quantity = req.body.Quantity;
-
-    books.price = purchase.unitCost;
-
-    book.price = books.price;
-
-    book.unitCost = book.price;
-
-    book.totalCost = purchase.totalCost;
+    // books.quantity = req.body.Quantity;
+    //
+    // books.price = purchase.unitCost;
+    //
+    // book.price = books.price;
+    //
+    // book.unitCost = book.price;
+    //
+    // book.totalCost = purchase.totalCost;
 
     //console.log(book.unitCost);
 
@@ -248,7 +261,8 @@ app.post("/purchase", function(req,res) {
 
     // console.log(JSON.stringify(purchase));
     // console.log('======================');
-        res.render("purchase", purchase);
+
+    res.render("purchase", purchase);
     console.log("render finished");
 });
 
