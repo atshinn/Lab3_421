@@ -2,6 +2,9 @@ extends template.pug
 
 block head
     title index
+    meta(http-equiv="cache-control", content="max-age=0")
+    meta(http-equiv="cache-control", content="no-cache")
+    meta(http-equiv="expires", content="0")
 block content
     p Please the following information:
     form(action='/purchase' method='post')
@@ -21,11 +24,9 @@ block content
                         select(size=books.length name='bookselection' multiple='multiple')
                             each book in books
                                 option(value=book.name)= book.name
-            meta(http-equiv="cache-control", content="max-age=0")
-            meta(http-equiv="cache-control", content="no-cache")
-            meta(http-equiv="expires", content="0")
+            
         br
         ul(style='color: #ff0000')
         input(name="SUBMIT" type="submit")
         br
-        a(href='http://localhost:8000/landing') LOGOUT
+        a(href='http://localhost:8000/logout') LOGOUT
