@@ -1,0 +1,16 @@
+extends template
+
+block head
+    meta(http-equiv='content-type', content='text/html; charset=windows-1252')
+    title Admin Logged in
+block content
+    h1 Admin Logged in
+    br
+    br
+    meta(http-equiv="cache-control", content="max-age=0")
+    meta(http-equiv="cache-control", content="no-cache")
+    meta(http-equiv="expires", content="0")
+    | Welcome Admin, you have successfully logged in!
+    | Click
+    a(href='http://localhost:8000/manage') here
+    |  to modify the book store!

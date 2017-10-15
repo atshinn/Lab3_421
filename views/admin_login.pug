@@ -1,0 +1,23 @@
+extends template
+
+
+block head
+    meta(http-equiv='content-type', content='text/html; charset=windows-1252')
+    title Admin Login page
+block content
+    h1 Admin Login page
+    br
+    form(action='/admin_login', method='post')
+        table(width='75%')
+            tbody
+                tr
+                    td(width='48%') Enter your name
+                    td(width='52%')
+                        input(name='name', type='text', value=name)
+                tr
+                    td(width='48%') Enter your password
+                    td(width='52%')
+                        input(name='pwd', type='text', value=pwd)
+        p
+            input(name='Submit', value='Login', type='submit')
+            input(name='Reset', value='Reset form', type='reset')

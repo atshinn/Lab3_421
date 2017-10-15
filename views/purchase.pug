@@ -2,12 +2,10 @@ extends template.pug
 
 block head
     title Validate
-    meta(http-equiv="cache-control", content="max-age=0")
-    meta(http-equiv="cache-control", content="no-cache")
-    meta(http-equiv="expires", content="0")
-    
+
 block content
-    h3= thankyou
+    h3 Thank you #{name}
+    //h3= purchase.thankyou
     p Your Order
     table(style="padding: 1in" cellpadding="2" border="2")
         tbody
@@ -20,17 +18,22 @@ block content
                     b Unit Cost
                 td
                     b Total Cost
-            each row in table
+            each books in book
                 tr
-                    td(align="left")= row.name
-                    td(align="right")= row.quantity
-                    td(align="right")= row.unitCost
-                    td(align="right")= row.totalCost
-                    
-    p(name='totalCost')= totalCostStr
+                    td(align="left")= book
+                    td(align="right")= quantity
+                    //td(align="right")= book.quantity
+                    td(align="right")= unitCost
+                    //td(align="right")= purchase.unitCost
+                    td(align="right")= totalCost
+                    //td(align="right")= purchase.totalCost
+    //p= purchase.costStr
+    meta(http-equiv="cache-control", content="max-age=0")
+    meta(http-equiv="cache-control", content="no-cache")
+    meta(http-equiv="expires", content="0")
     br
     p Please enter your Credit Card information
-    form(method="post" action="/confirm")
+    form(method="post" action="confirm")
         table(border="0")
             tbody
                 tr
@@ -48,7 +51,6 @@ block content
                     td Express Delivery
                     td(width="92")
                         input(name="expressdelivery" type="checkbox")
-        input(name="Cost" type="hidden" value=totalCostStr)
         input(name="Purchase" value="Purchase" type="submit")
         br
-        a(href='http://localhost:8000/logout') LOGOUT
+        a(href='http://localhost:8000/landing') LOGOUT
